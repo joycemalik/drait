@@ -1,0 +1,203 @@
+.river-down {
+  display: none;
+}
+@media (max-width: 760px) {
+  .river-across {
+    display: none;
+  }
+  .river-down {
+    display: block;
+  }
+}
+
+/* Water moves downstream */
+.ripples path {
+  animation: river-flow var(--flow, 30s) linear infinite;
+}
+@keyframes river-flow {
+  to {
+    stroke-dashoffset: -600;
+  }
+}
+
+/* Boats bob and sway a little */
+.boat {
+  transform-box: fill-box;
+  transform-origin: 50% 80%;
+  animation: boat-bob 6.5s ease-in-out infinite;
+  transition: filter 0.2s;
+  outline: none;
+}
+.boat:hover,
+.boat:focus-visible {
+  filter: drop-shadow(0 4px 6px rgba(31, 42, 68, 0.3));
+}
+.boat:focus-visible path:nth-of-type(2) {
+  stroke: var(--laterite);
+  stroke-width: 2.4;
+}
+@keyframes boat-bob {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-2.5deg);
+  }
+  50% {
+    transform: translateY(-3.5px) rotate(2deg);
+  }
+}
+
+.lantern {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: lantern-drift 11s ease-in-out infinite;
+  outline: none;
+}
+.lantern:focus-visible path:nth-of-type(2) {
+  stroke: var(--laterite);
+  stroke-width: 2;
+}
+@keyframes lantern-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(-3deg);
+  }
+  50% {
+    transform: translate(14px, -2px) rotate(3deg);
+  }
+}
+.lantern-glow {
+  animation: lantern-glow 3.5s ease-in-out infinite;
+}
+@keyframes lantern-glow {
+  0%,
+  100% {
+    opacity: 0.18;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.smoke {
+  animation: smoke 4.5s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+@keyframes smoke {
+  0% {
+    opacity: 0;
+    transform: translateY(4px) scaleY(0.7);
+  }
+  35% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-8px) scaleY(1.1);
+  }
+}
+
+.village {
+  cursor: pointer;
+  outline: none;
+}
+.village-tagline {
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.village:hover .village-tagline,
+.village:focus-visible .village-tagline {
+  opacity: 1;
+}
+.village:focus-visible text:first-of-type {
+  text-decoration: underline;
+}
+
+.boat-label {
+  font-family: var(--font-body), sans-serif;
+  color: var(--ink);
+  text-shadow:
+    0 0 6px var(--paper),
+    0 0 3px var(--paper),
+    0 0 1px var(--paper);
+}
+.boat-title {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.15;
+}
+.boat-meta {
+  font-size: 11.5px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+}
+
+/* Sky */
+.sky {
+  --sky-top: #d7e4e3;
+  --sky-mid: #ebe9df;
+}
+.sky[data-phase="dawn"] {
+  --sky-top: #efcfb1;
+  --sky-mid: #f2e3cf;
+}
+.sky[data-phase="golden"] {
+  --sky-top: #eec888;
+  --sky-mid: #f2dcb8;
+}
+.sky[data-phase="night"] {
+  --sky-top: #c9bfd4;
+  --sky-mid: #e8dfd9;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="day"]) .sky {
+    --sky-top: #243049;
+    --sky-mid: #1a1f2b;
+  }
+  :root:not([data-theme="day"]) .sky[data-phase="golden"] {
+    --sky-top: #4a3a33;
+    --sky-mid: #221f24;
+  }
+}
+:root[data-theme="dusk"] .sky {
+  --sky-top: #243049;
+  --sky-mid: #1a1f2b;
+}
+:root[data-theme="dusk"] .sky[data-phase="golden"] {
+  --sky-top: #4a3a33;
+  --sky-mid: #221f24;
+}
+
+.bird {
+  animation: bird-cross 70s linear infinite;
+}
+@keyframes bird-cross {
+  from {
+    transform: translateX(-10vw);
+  }
+  to {
+    transform: translateX(110vw);
+  }
+}
+.bird path {
+  animation: wing 1.4s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@keyframes wing {
+  50% {
+    transform: scaleY(0.55);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ripples path,
+  .boat,
+  .lantern,
+  .smoke,
+  .bird,
+  .bird path {
+    animation: none !important;
+  }
+}
