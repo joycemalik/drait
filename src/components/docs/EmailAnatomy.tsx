@@ -2,10 +2,10 @@
 
 const parts: { text: string; label: string; detail: string; color: string }[] = [
   { text: "1da", label: "College code", detail: "Dr. AIT", color: "var(--ink-soft)" },
-  { text: "23", label: "Joined", detail: "2023", color: "var(--laterite)" },
-  { text: "cs", label: "Branch", detail: "CSE", color: "var(--river-deep)" },
-  { text: "069", label: "Roll no.", detail: "069", color: "var(--ink-soft)" },
-  { text: "@cs.drait.edu.in", label: "College domain", detail: "Verified student", color: "var(--sal)" },
+  { text: "24", label: "Joined", detail: "2024", color: "var(--laterite)" },
+  { text: "is", label: "Branch", detail: "ISE", color: "var(--river-deep)" },
+  { text: "042", label: "Roll no.", detail: "042", color: "var(--ink-soft)" },
+  { text: "@is.drait.edu.in", label: "College domain", detail: "Verified student", color: "var(--sal)" },
 ];
 
 function Brace({ color }: { color: string }) {
@@ -25,7 +25,7 @@ function Brace({ color }: { color: string }) {
 
 export default function EmailAnatomy() {
   return (
-    <figure style={{ margin: "1.4rem 0 0.4rem" }} aria-label="How 1da23cs069@cs.drait.edu.in becomes USN 1DA23CS069, joined 2023, branch CSE">
+    <figure style={{ margin: "1.4rem 0 0.4rem" }} aria-label="How 1da24is042@is.drait.edu.in becomes USN 1DA24IS042, joined 2024, branch ISE">
       <div style={{ overflowX: "auto", paddingBottom: "0.3rem" }}>
         <div style={{ display: "flex", alignItems: "flex-start", gap: "0.2rem", minWidth: "33rem" }}>
           {parts.map((p) => (
@@ -50,7 +50,7 @@ export default function EmailAnatomy() {
         </div>
       </div>
       <figcaption style={{ marginTop: "0.8rem", fontSize: "0.85rem", color: "var(--ink-soft)" }}>
-        Your profile starts as <strong>USN 1DA23CS069</strong>, joined 2023, Computer Science &amp; Engineering, verified.
+        Your profile starts as <strong>USN 1DA24IS042</strong>, joined 2024, Information Science &amp; Engineering, verified.
       </figcaption>
     </figure>
   );

@@ -40,7 +40,7 @@ create trigger enforce_college_email
   for each row execute function private.enforce_college_email();
 
 -- ─── Departments ───────────────────────────────────────────
--- USNs look like 1DA23CS069: college 1DA, joined 2023, branch CS, roll 069.
+-- USNs look like 1DA24IS042: college 1DA, joined 2024, branch IS, roll 042.
 create function private.department_from_code(code text)
 returns text
 language sql immutable
