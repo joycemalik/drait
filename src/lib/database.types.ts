@@ -119,6 +119,24 @@ export type Database = {
           },
         ]
       }
+      allowed_emails: {
+        Row: {
+          created_at: string
+          email: string
+          note: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          note?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          note?: string
+        }
+        Relationships: []
+      }
       announcements: {
         Row: {
           author_id: string | null
@@ -561,33 +579,63 @@ export type Database = {
       }
       profiles: {
         Row: {
+          admission_year: number | null
           avatar_url: string | null
+          bio: string | null
           branch: string | null
           created_at: string
+          department: string | null
           full_name: string | null
+          github: string | null
           id: string
+          instagram: string | null
           is_site_admin: boolean
           is_verified_student: boolean
+          linkedin: string | null
+          section: string | null
+          skills: string[]
+          usn: string | null
+          website: string | null
           year: string | null
         }
         Insert: {
+          admission_year?: number | null
           avatar_url?: string | null
+          bio?: string | null
           branch?: string | null
           created_at?: string
+          department?: string | null
           full_name?: string | null
+          github?: string | null
           id: string
+          instagram?: string | null
           is_site_admin?: boolean
           is_verified_student?: boolean
+          linkedin?: string | null
+          section?: string | null
+          skills?: string[]
+          usn?: string | null
+          website?: string | null
           year?: string | null
         }
         Update: {
+          admission_year?: number | null
           avatar_url?: string | null
+          bio?: string | null
           branch?: string | null
           created_at?: string
+          department?: string | null
           full_name?: string | null
+          github?: string | null
           id?: string
+          instagram?: string | null
           is_site_admin?: boolean
           is_verified_student?: boolean
+          linkedin?: string | null
+          section?: string | null
+          skills?: string[]
+          usn?: string | null
+          website?: string | null
           year?: string | null
         }
         Relationships: []

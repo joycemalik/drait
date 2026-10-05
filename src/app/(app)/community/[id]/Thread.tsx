@@ -1,5 +1,6 @@
 "use client";
 import { useActionState, useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { replyToDiscussion, type ActionResult } from "@/lib/actions";
 import { timeAgo } from "@/lib/dates";
@@ -42,7 +43,7 @@ export default function Thread({
           setReplies((rs) =>
             rs.some((r) => r.id === row.id)
               ? rs
-              : [...rs, { id: row.id, body: row.body, createdAt: row.created_at, author: p?.full_name ?? "A student", avatarUrl: p?.avatar_url ?? undefined }],
+              : [...rs, { id: row.id, authorId: row.author_id, body: row.body, createdAt: row.created_at, author: p?.full_name ?? "A student", avatarUrl: p?.avatar_url ?? undefined }],
           );
         },
       )
@@ -79,7 +80,15 @@ export default function Thread({
             )}
             <div style={{ minWidth: 0 }}>
               <p style={{ fontSize: "0.82rem", color: "var(--ink-soft)" }}>
-                <strong style={{ color: "var(--ink)" }}>{r.author}</strong> · {timeAgo(r.createdAt)}
+                <strong style={{ color: "var(--ink)" }}>
+                  {r.authorId ? (
+                    <Link href={`/people/${r.authorId}`} style={{ color: "inherit", textDecoration: "none" }}>
+                      {r.author}
+                    </Link>
+                  ) : (
+                    r.author
+                  )}
+                </strong> · {timeAgo(r.createdAt)}
               </p>
               <p style={{ marginTop: "0.25rem", lineHeight: 1.65, whiteSpace: "pre-wrap" }}>{r.body}</p>
             </div>

@@ -3,6 +3,7 @@ import Mark from "@/components/Mark";
 import ThemeToggle from "@/components/ThemeToggle";
 import AuthButton from "@/components/AuthButton";
 import Sky from "@/components/river/Sky";
+import SignInNotice from "@/components/SignInNotice";
 import HeroSketch from "@/components/river/HeroSketch";
 import River from "@/components/river/River";
 import Voices from "@/components/river/Voices";
@@ -27,7 +28,8 @@ async function contributorCount(repoUrl?: string) {
   }
 }
 
-export default async function Landing() {
+export default async function Landing({ searchParams }: { searchParams: Promise<{ signin?: string }> }) {
+  const { signin } = await searchParams;
   const today = todayISO();
   const repoUrl = process.env.NEXT_PUBLIC_REPO_URL;
   const [events, clubs, announcements, discussions, viewer, contributors] = await Promise.all([
@@ -85,6 +87,8 @@ export default async function Landing() {
           )}
         </div>
       </nav>
+
+      {signin && <SignInNotice reason={signin} />}
 
       <Sky
         sketch={<HeroSketch />}

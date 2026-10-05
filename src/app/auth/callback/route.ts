@@ -13,5 +13,8 @@ export async function GET(request: NextRequest) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) return NextResponse.redirect(`${origin}${next}`);
   }
-  return NextResponse.redirect(`${origin}/?signin=failed`);
+  // Supabase reports a rejected signup (our college-email rule) as a database error.
+  const reason = searchParams.get("error_description") ?? "";
+  const notCollege = /database error|college/i.test(reason);
+  return NextResponse.redirect(`${origin}/?signin=${notCollege ? "college-only" : "failed"}`);
 }

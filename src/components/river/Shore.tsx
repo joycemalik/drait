@@ -60,8 +60,11 @@ export default function Shore({
           </div>
         </div>
 
-        <p style={{ marginTop: "4rem", fontSize: "0.75rem", color: "var(--ink-faint)" }}>
-          Dr. Ambedkar Institute of Technology, Bengaluru · MIT licensed
+        <p style={{ marginTop: "4rem", fontSize: "0.75rem", color: "var(--ink-faint)", display: "flex", flexWrap: "wrap", gap: "0.3rem 1rem" }}>
+          <span>A student project for Dr. Ambedkar Institute of Technology, Bengaluru · MIT licensed</span>
+          <Link href="/about" style={{ color: "var(--ink-soft)" }}>About</Link>
+          <Link href="/privacy" style={{ color: "var(--ink-soft)" }}>Privacy</Link>
+          <Link href="/terms" style={{ color: "var(--ink-soft)" }}>Terms</Link>
         </p>
       </div>
     </footer>

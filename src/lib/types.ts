@@ -82,6 +82,7 @@ export interface Discussion {
   body: string;
   author: string;
   authorYear: string;
+  authorId?: string;
   category: DiscussionCategory;
   subcategory: string;
   postedAt: string;
@@ -132,13 +133,13 @@ export interface Achievement {
   verified: boolean;
 }
 
-export type Department = "cse" | "ise" | "aiml" | "ece" | "eee" | "mech" | "civil" | "other";
+export type { DepartmentId as Department } from "@/lib/college";
 export type ResourceKind = "notes" | "pyq" | "lab" | "reference" | "other";
 
 export interface AcademicResource {
   id: string;
   title: string;
-  department: Department;
+  department: import("@/lib/college").DepartmentId;
   semester: number;
   subject: string;
   kind: ResourceKind;

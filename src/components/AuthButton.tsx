@@ -6,7 +6,11 @@ export function signInWithGoogle(next = "/today") {
   const supabase = createClient();
   return supabase.auth.signInWithOAuth({
     provider: "google",
-    options: { redirectTo: `${location.origin}/auth/callback?next=${encodeURIComponent(next)}` },
+    options: {
+      redirectTo: `${location.origin}/auth/callback?next=${encodeURIComponent(next)}`,
+      // Always show the account picker, so students can choose their college account.
+      queryParams: { prompt: "select_account" },
+    },
   });
 }
 

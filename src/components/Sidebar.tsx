@@ -10,6 +10,7 @@ import {
   Compass,
   BookOpen,
   Award,
+  Info,
   Waves,
   X,
 } from "lucide-react";
@@ -25,6 +26,7 @@ const nav = [
   { label: "Opportunities", href: "/opportunities", icon: Compass },
   { label: "Academics", href: "/academics", icon: BookOpen },
   { label: "Achievements", href: "/achievements", icon: Award },
+  { label: "About", href: "/about", icon: Info },
 ];
 
 export default function Sidebar({

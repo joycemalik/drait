@@ -1,19 +1,11 @@
 "use client";
 import { useActionState, useEffect, useRef, useState, useTransition } from "react";
 import AuthButton from "@/components/AuthButton";
+import { DEPARTMENTS } from "@/lib/college";
 import { removeResource, shareResource } from "@/lib/actions";
 import type { AcademicResource, Department, ResourceKind } from "@/lib/types";
 
-const departments: { id: Department; label: string }[] = [
-  { id: "cse", label: "CSE" },
-  { id: "ise", label: "ISE" },
-  { id: "aiml", label: "AIML" },
-  { id: "ece", label: "ECE" },
-  { id: "eee", label: "EEE" },
-  { id: "mech", label: "Mechanical" },
-  { id: "civil", label: "Civil" },
-  { id: "other", label: "Other" },
-];
+const departments: { id: Department; label: string }[] = DEPARTMENTS.map((d) => ({ id: d.id, label: d.short }));
 const kinds: { id: ResourceKind; label: string }[] = [
   { id: "notes", label: "Notes" },
   { id: "pyq", label: "Past papers" },

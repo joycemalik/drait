@@ -2,17 +2,18 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { isSupabaseConfigured } from "@/lib/supabase/env";
+import { isSupabaseConfigured, supabaseUrl } from "@/lib/supabase/env";
+import { DEPARTMENTS as COLLEGE_DEPARTMENTS, departmentShort } from "@/lib/college";
 
 export type ActionResult = { ok: true } | { ok: false; error: string; needsSignIn?: boolean };
 
 const DISCUSSION_CATEGORIES = ["academic", "career", "campus", "projects", "general"];
 const PRIORITIES = ["urgent", "important", "info"];
-const DEPARTMENTS = ["cse", "ise", "aiml", "ece", "eee", "mech", "civil", "other"];
+const DEPARTMENTS: string[] = COLLEGE_DEPARTMENTS.map((d) => d.id);
 const RESOURCE_KINDS = ["notes", "pyq", "lab", "reference", "other"];
 const ACHIEVEMENT_CATEGORIES = ["hackathon", "competition", "certification", "research", "sports", "design", "other"];
 const YEARS = ["1st Sem", "2nd Sem", "3rd Sem", "4th Sem", "5th Sem", "6th Sem", "7th Sem", "8th Sem", "Alumni", "Faculty"];
-const BRANCHES = ["CSE", "ISE", "AIML", "ECE", "EEE", "Mech", "Civil", "Other"];
+
 
 function isHttpUrl(v: string) {
   try {
@@ -273,20 +274,74 @@ export async function setAchievementVerified(id: string, verified: boolean): Pro
   return { ok: true };
 }
 
+const handle = (v: string) =>
+  v
+    .trim()
+    .replace(/^https?:\/\/(www\.)?(github\.com|linkedin\.com\/in|instagram\.com)\//i, "")
+    .replace(/^@/, "")
+    .replace(/\/+$/, "");
+
 export async function updateProfile(_prev: ActionResult | null, fd: FormData): Promise<ActionResult> {
   const a = await authed();
   if ("error" in a) return a.error;
   const { supabase, user } = a;
   const fullName = text(fd, "full_name");
-  const branch = text(fd, "branch");
+  const department = text(fd, "department");
   const year = text(fd, "year");
+  const section = text(fd, "section").toUpperCase();
+  const bio = text(fd, "bio");
+  const skills = text(fd, "skills")
+    .split(",")
+    .map((x) => x.trim())
+    .filter(Boolean)
+    .map((x) => x.slice(0, 30));
+  const github = handle(text(fd, "github"));
+  const linkedin = handle(text(fd, "linkedin"));
+  const instagram = handle(text(fd, "instagram"));
+  let website = text(fd, "website");
+  if (website && !/^https?:\/\//i.test(website)) website = `https://${website}`;
+
   if (fullName.length < 2 || fullName.length > 80) return { ok: false, error: "Add your name (2–80 characters)." };
-  if (branch && !BRANCHES.includes(branch)) return { ok: false, error: "Pick your branch." };
+  if (department && !DEPARTMENTS.includes(department)) return { ok: false, error: "Pick your department." };
   if (year && !YEARS.includes(year)) return { ok: false, error: "Pick your semester." };
+  if (section && !/^[A-Z]$/.test(section)) return { ok: false, error: "Section should be a single letter, like A." };
+  if (bio.length > 280) return { ok: false, error: "Keep your bio under 280 characters." };
+  if (skills.length > 12) return { ok: false, error: "Up to 12 skills, separated by commas." };
+  if (github && !/^[A-Za-z0-9-]{1,39}$/.test(github)) return { ok: false, error: "That GitHub username doesn't look right." };
+  if (linkedin && !/^[A-Za-z0-9-]{3,100}$/.test(linkedin)) return { ok: false, error: "Use the part after linkedin.com/in/." };
+  if (instagram && !/^[A-Za-z0-9._]{1,30}$/.test(instagram)) return { ok: false, error: "That Instagram handle doesn't look right." };
+  if (website && (!isHttpUrl(website) || website.length > 200 || website.startsWith("http:")))
+    return { ok: false, error: "Website should be a full https:// link." };
+
   const { error } = await supabase
     .from("profiles")
-    .update({ full_name: fullName, branch: branch || null, year: year || null })
+    .update({
+      full_name: fullName,
+      department: department || null,
+      branch: departmentShort(department) || null,
+      year: year || null,
+      section: section || null,
+      bio: bio || null,
+      skills,
+      github: github || null,
+      linkedin: linkedin || null,
+      instagram: instagram || null,
+      website: website || null,
+    })
     .eq("id", user.id);
+  if (error) return { ok: false, error: error.message };
+  refresh();
+  return { ok: true };
+}
+
+/** Saves the URL of a picture the student just uploaded to their own avatars folder. */
+export async function setAvatar(url: string): Promise<ActionResult> {
+  const a = await authed();
+  if ("error" in a) return a.error;
+  const { supabase, user } = a;
+  const prefix = `${supabaseUrl}/storage/v1/object/public/avatars/${user.id}/`;
+  if (!url.startsWith(prefix) || url.length > 400) return { ok: false, error: "That upload didn't come from your account." };
+  const { error } = await supabase.from("profiles").update({ avatar_url: url }).eq("id", user.id);
   if (error) return { ok: false, error: error.message };
   refresh();
   return { ok: true };

@@ -66,6 +66,7 @@ const toDiscussion = (r: any): Discussion => ({
   body: r.body,
   author: r.author_display,
   authorYear: r.author_year_display,
+  authorId: r.author_id ?? undefined,
   category: r.category,
   subcategory: r.subcategory,
   postedAt: r.created_at,
@@ -170,6 +171,7 @@ export const getDiscussions = cache(async (): Promise<Discussion[]> => {
 
 export interface Reply {
   id: string;
+  authorId?: string;
   body: string;
   author: string;
   avatarUrl?: string;
@@ -182,7 +184,7 @@ export async function getReplies(discussionId: string): Promise<Reply[]> {
   const rows = must(
     await sb
       .from("discussion_replies")
-      .select("id, body, created_at, profiles(full_name, avatar_url)")
+      .select("id, body, created_at, author_id, profiles(full_name, avatar_url)")
       .eq("discussion_id", discussionId)
       .order("created_at"),
   ) as any[];
@@ -190,6 +192,7 @@ export async function getReplies(discussionId: string): Promise<Reply[]> {
     id: r.id,
     body: r.body,
     author: r.profiles?.full_name ?? "A student",
+    authorId: r.author_id,
     avatarUrl: r.profiles?.avatar_url ?? undefined,
     createdAt: r.created_at,
   }));
@@ -247,29 +250,99 @@ export const getAcademicResources = cache(async (): Promise<AcademicResource[]> 
   }));
 });
 
-export interface Profile {
+export interface PublicProfile {
+  id: string;
   fullName: string;
-  branch: string;
-  year: string;
   avatarUrl?: string;
+  department: string;
+  year: string;
+  section: string;
+  bio: string;
+  skills: string[];
+  github: string;
+  linkedin: string;
+  instagram: string;
+  website: string;
+  verified: boolean;
+  joinedAt: string;
+}
+
+export interface Profile extends PublicProfile {
+  /** kept for older callers: the short department label */
+  branch: string;
+  usn: string;
+  admissionYear?: number;
   email?: string;
 }
 
-/** The signed-in student's editable profile, or null when signed out. */
+const PUBLIC_PROFILE_COLUMNS =
+  "id, full_name, avatar_url, branch, year, department, section, bio, skills, github, linkedin, instagram, website, is_verified_student, created_at";
+
+const toPublicProfile = (p: any): PublicProfile => ({
+  id: p.id,
+  fullName: p.full_name ?? "",
+  avatarUrl: p.avatar_url ?? undefined,
+  department: p.department ?? "",
+  year: p.year ?? "",
+  section: p.section ?? "",
+  bio: p.bio ?? "",
+  skills: p.skills ?? [],
+  github: p.github ?? "",
+  linkedin: p.linkedin ?? "",
+  instagram: p.instagram ?? "",
+  website: p.website ?? "",
+  verified: p.is_verified_student ?? false,
+  joinedAt: p.created_at,
+});
+
+/** The signed-in student's own profile, including private details, or null when signed out. */
 export async function getProfile(): Promise<Profile | null> {
   if (!isSupabaseConfigured) return null;
   const sb = await createClient();
   const { data } = await sb.auth.getUser();
   if (!data.user) return null;
-  const { data: p } = await sb.from("profiles").select("full_name, branch, year, avatar_url").eq("id", data.user.id).maybeSingle();
+  const { data: p } = await sb
+    .from("profiles")
+    .select(`${PUBLIC_PROFILE_COLUMNS}, usn, admission_year`)
+    .eq("id", data.user.id)
+    .maybeSingle();
+  if (!p) return null;
   return {
-    fullName: p?.full_name ?? "",
-    branch: p?.branch ?? "",
-    year: p?.year ?? "",
-    avatarUrl: p?.avatar_url ?? undefined,
+    ...toPublicProfile(p),
+    branch: p.branch ?? "",
+    usn: p.usn ?? "",
+    admissionYear: p.admission_year ?? undefined,
     email: data.user.email,
   };
 }
+
+export interface PersonPage {
+  profile: PublicProfile;
+  clubs: { slug: string; name: string; color: string; role: string }[];
+  discussions: Discussion[];
+  achievements: Achievement[];
+}
+
+/** Everything shown on a student's public page. */
+export const getPerson = cache(async (id: string): Promise<PersonPage | null> => {
+  if (!isSupabaseConfigured || !/^[0-9a-f-]{36}$/.test(id)) return null;
+  const sb = await createClient();
+  const [profile, clubs, discussions, achievements] = await Promise.all([
+    sb.from("profiles").select(PUBLIC_PROFILE_COLUMNS).eq("id", id).maybeSingle(),
+    sb.from("club_members").select("role, clubs(slug, name, color)").eq("user_id", id),
+    sb.from("discussions_view").select("*").eq("author_id", id).order("created_at", { ascending: false }).limit(10),
+    sb.from("achievements_view").select("*").eq("submitted_by", id).order("achieved_on", { ascending: false }),
+  ]);
+  if (!profile.data) return null;
+  return {
+    profile: toPublicProfile(profile.data),
+    clubs: ((clubs.data ?? []) as any[])
+      .filter((m) => m.clubs)
+      .map((m) => ({ slug: m.clubs.slug, name: m.clubs.name, color: m.clubs.color, role: m.role })),
+    discussions: (discussions.data ?? []).map(toDiscussion),
+    achievements: (achievements.data ?? []).map(toAchievement),
+  };
+});
 
 export interface Viewer {
   id: string;

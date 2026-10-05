@@ -32,7 +32,13 @@ export default async function DiscussionPage({ params }: { params: Promise<{ id:
             {d.title}
           </h1>
           <p style={{ marginTop: "0.6rem", fontSize: "0.85rem", color: "var(--ink-faint)" }}>
-            {d.author}
+            {d.authorId ? (
+              <Link href={`/people/${d.authorId}`} style={{ color: "var(--ink-soft)" }}>
+                {d.author}
+              </Link>
+            ) : (
+              d.author
+            )}
             {d.authorYear ? `, ${d.authorYear}` : ""} · {timeAgo(d.postedAt)}
             {d.solved ? <span style={{ color: "var(--sal)" }}> · answered</span> : null}
           </p>
