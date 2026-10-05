@@ -61,16 +61,16 @@ export default function River(props: RiverProps) {
         }}
       >
         <div>
-          <p className="section-label">The river</p>
+          <p className="section-label">Events</p>
           <h2 className="font-display" style={{ fontSize: "clamp(1.6rem, 3.4vw, 2.4rem)", fontWeight: 500, lineHeight: 1.1 }}>
-            {events.length === 0 ? "Still water this fortnight." : "Two weeks of gatherings, drifting your way."}
+            {events.length === 0 ? "No events in the next two weeks." : "Upcoming events, next 14 days."}
           </h2>
         </div>
         <button
           onClick={() => setView((v) => (v === "river" ? "list" : "river"))}
           style={{ fontSize: "0.85rem", color: "var(--ink-soft)", textDecoration: "underline", textUnderlineOffset: 4 }}
         >
-          {view === "river" ? "Read it as a list" : "Back to the river"}
+          {view === "river" ? "View as list" : "View timeline"}
         </button>
       </div>
 
@@ -415,7 +415,7 @@ function AcrossRiver(s: Shared) {
             height={stageH}
             viewBox={`0 0 ${model.width} ${model.height}`}
             role="group"
-            aria-label="River of upcoming events"
+            aria-label="Upcoming events timeline"
           >
             <FarShore model={model} />
             <Water model={model} flowSeconds={flowSecondsFor(s.events.length)} />
@@ -456,7 +456,7 @@ function AcrossRiver(s: Shared) {
                 style={{ fontFamily: "var(--font-fraunces), Georgia, serif", fontStyle: "italic", fontSize: 22 }}
                 fill="var(--ink-soft)"
               >
-                A quiet fortnight. Nothing on the water yet.
+                No events scheduled yet.
               </text>
             )}
           </svg>
@@ -476,7 +476,7 @@ function AcrossRiver(s: Shared) {
               fontSize: "0.95rem",
             }}
           >
-            keep scrolling, or drag the water, to drift downstream →
+            scroll or drag to see later dates →
           </motion.p>
         )}
       </div>
@@ -494,7 +494,7 @@ function DownRiver(s: Shared) {
 
   return (
     <div style={{ padding: "0 0.75rem" }}>
-      <svg viewBox={`0 0 ${model.width} ${model.height}`} width="100%" role="group" aria-label="River of upcoming events">
+      <svg viewBox={`0 0 ${model.width} ${model.height}`} width="100%" role="group" aria-label="Upcoming events timeline">
         <Water model={model} flowSeconds={flowSecondsFor(s.events.length)} />
         <DayMarks model={model} today={s.today} />
         {lanterns.map(({ a, t, c }) => {

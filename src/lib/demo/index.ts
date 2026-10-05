@@ -3,6 +3,7 @@ import { demoEvents } from "./events";
 import { demoAnnouncements } from "./announcements";
 import { demoDiscussions } from "./discussions";
 import { demoOpportunities } from "./opportunities";
+import { demoAchievements } from "./achievements";
 import { todayISO } from "@/lib/dates";
 
 // Demo content was written as if "today" were this date; it is shifted so it always looks current.
@@ -26,5 +27,10 @@ export function getDemo() {
     announcements: demoAnnouncements.map((a) => ({ ...a, postedAt: shiftDate(a.postedAt, s) })),
     discussions: demoDiscussions.map((d) => ({ ...d, postedAt: shiftDate(d.postedAt, s) })),
     opportunities: demoOpportunities.map((o) => ({ ...o, deadline: shiftDate(o.deadline, s) })),
+    // Past achievements keep their real dates; only club details are filled in.
+    achievements: demoAchievements.map((a) => {
+      const c = demoClubs.find((x) => x.slug === a.clubSlug);
+      return { ...a, clubName: c?.name, clubColor: c?.color };
+    }),
   };
 }

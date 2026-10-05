@@ -8,6 +8,21 @@ export type ActionResult = { ok: true } | { ok: false; error: string; needsSignI
 
 const DISCUSSION_CATEGORIES = ["academic", "career", "campus", "projects", "general"];
 const PRIORITIES = ["urgent", "important", "info"];
+const DEPARTMENTS = ["cse", "ise", "aiml", "ece", "eee", "mech", "civil", "other"];
+const RESOURCE_KINDS = ["notes", "pyq", "lab", "reference", "other"];
+const ACHIEVEMENT_CATEGORIES = ["hackathon", "competition", "certification", "research", "sports", "design", "other"];
+const YEARS = ["1st Sem", "2nd Sem", "3rd Sem", "4th Sem", "5th Sem", "6th Sem", "7th Sem", "8th Sem", "Alumni", "Faculty"];
+const BRANCHES = ["CSE", "ISE", "AIML", "ECE", "EEE", "Mech", "Civil", "Other"];
+
+function isHttpUrl(v: string) {
+  try {
+    const u = new URL(v);
+    return u.protocol === "https:" || u.protocol === "http:";
+  } catch {
+    return false;
+  }
+}
+
 const EVENT_TYPES = ["workshop", "hackathon", "competition", "seminar", "practice", "meeting", "social"];
 
 type Authed =
@@ -176,6 +191,103 @@ export async function createEvent(clubSlug: string, _prev: ActionResult | null, 
     created_by: user.id,
   });
   if (error) return { ok: false, error: error.code === "42501" ? "Only this club's leads can add events." : error.message };
+  refresh();
+  return { ok: true };
+}
+
+export async function shareResource(_prev: ActionResult | null, fd: FormData): Promise<ActionResult> {
+  const a = await authed();
+  if ("error" in a) return a.error;
+  const { supabase, user } = a;
+  const title = text(fd, "title");
+  const subject = text(fd, "subject");
+  const department = text(fd, "department");
+  const kind = text(fd, "kind");
+  const url = text(fd, "url");
+  const semester = parseInt(text(fd, "semester"), 10);
+  if (title.length < 3 || title.length > 200) return { ok: false, error: "Add a title (3–200 characters)." };
+  if (subject.length < 2 || subject.length > 120) return { ok: false, error: "Add the subject name." };
+  if (!DEPARTMENTS.includes(department)) return { ok: false, error: "Pick a department." };
+  if (!(semester >= 1 && semester <= 8)) return { ok: false, error: "Pick a semester." };
+  if (!RESOURCE_KINDS.includes(kind)) return { ok: false, error: "Pick a type." };
+  if (!isHttpUrl(url) || url.length > 2000) return { ok: false, error: "Paste a full link starting with https://" };
+
+  const { error } = await supabase
+    .from("academic_resources")
+    .insert({ title, subject, department, semester, kind, url, submitted_by: user.id });
+  if (error) return { ok: false, error: error.message };
+  revalidatePath("/academics");
+  return { ok: true };
+}
+
+export async function removeResource(id: string): Promise<ActionResult> {
+  const a = await authed();
+  if ("error" in a) return a.error;
+  const { error, count } = await a.supabase.from("academic_resources").delete({ count: "exact" }).eq("id", id);
+  if (error) return { ok: false, error: error.message };
+  if (!count) return { ok: false, error: "You can only remove links you shared." };
+  revalidatePath("/academics");
+  return { ok: true };
+}
+
+export async function submitAchievement(_prev: ActionResult | null, fd: FormData): Promise<ActionResult> {
+  const a = await authed();
+  if ("error" in a) return a.error;
+  const { supabase, user } = a;
+  const title = text(fd, "title");
+  const people = text(fd, "people");
+  const category = text(fd, "category");
+  const achievedOn = text(fd, "achieved_on");
+  const clubSlug = text(fd, "club");
+  const link = text(fd, "link");
+  if (title.length < 3 || title.length > 200) return { ok: false, error: "Add a title (3–200 characters)." };
+  if (people.length < 2 || people.length > 200) return { ok: false, error: "Say who achieved it." };
+  if (!ACHIEVEMENT_CATEGORIES.includes(category)) return { ok: false, error: "Pick a category." };
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(achievedOn)) return { ok: false, error: "Add the date." };
+  if (link && (!isHttpUrl(link) || link.length > 2000)) return { ok: false, error: "The link should start with https://" };
+
+  const clubId = clubSlug ? await clubIdFor(supabase, clubSlug) : null;
+  const { error } = await supabase.from("achievements").insert({
+    title,
+    people,
+    team: text(fd, "team") || null,
+    club_id: clubId ?? null,
+    category,
+    achieved_on: achievedOn,
+    description: text(fd, "description").slice(0, 2000),
+    link: link || null,
+    submitted_by: user.id,
+  });
+  if (error) return { ok: false, error: error.message };
+  revalidatePath("/achievements");
+  return { ok: true };
+}
+
+export async function setAchievementVerified(id: string, verified: boolean): Promise<ActionResult> {
+  const a = await authed();
+  if ("error" in a) return a.error;
+  const { error, count } = await a.supabase.from("achievements").update({ verified }, { count: "exact" }).eq("id", id);
+  if (error) return { ok: false, error: error.message };
+  if (!count) return { ok: false, error: "Only the club's leads can verify this." };
+  revalidatePath("/achievements");
+  return { ok: true };
+}
+
+export async function updateProfile(_prev: ActionResult | null, fd: FormData): Promise<ActionResult> {
+  const a = await authed();
+  if ("error" in a) return a.error;
+  const { supabase, user } = a;
+  const fullName = text(fd, "full_name");
+  const branch = text(fd, "branch");
+  const year = text(fd, "year");
+  if (fullName.length < 2 || fullName.length > 80) return { ok: false, error: "Add your name (2–80 characters)." };
+  if (branch && !BRANCHES.includes(branch)) return { ok: false, error: "Pick your branch." };
+  if (year && !YEARS.includes(year)) return { ok: false, error: "Pick your semester." };
+  const { error } = await supabase
+    .from("profiles")
+    .update({ full_name: fullName, branch: branch || null, year: year || null })
+    .eq("id", user.id);
+  if (error) return { ok: false, error: error.message };
   refresh();
   return { ok: true };
 }

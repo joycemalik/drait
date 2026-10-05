@@ -21,7 +21,7 @@ export default function Voices({ discussions }: { discussions: Discussion[] }) {
 
       <p className="section-label">From the community</p>
       <h2 className="font-display" style={{ fontSize: "clamp(1.8rem, 4vw, 3rem)", fontWeight: 400, lineHeight: 1.08, margin: "0.3rem 0 3rem" }}>
-        Conversations under the banyan
+        Recent discussions
       </h2>
 
       <ol style={{ listStyle: "none", margin: 0, padding: 0, display: "grid", gap: "2.6rem" }}>

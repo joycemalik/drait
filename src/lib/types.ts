@@ -114,3 +114,36 @@ export interface Opportunity {
   tags: string[];
   featured: boolean;
 }
+
+export type AchievementCategory = "hackathon" | "competition" | "certification" | "research" | "sports" | "design" | "other";
+
+export interface Achievement {
+  id: string;
+  title: string;
+  people: string;
+  team?: string;
+  clubSlug?: string;
+  clubName?: string;
+  clubColor?: string;
+  category: AchievementCategory;
+  achievedOn: string;
+  description: string;
+  link?: string;
+  verified: boolean;
+}
+
+export type Department = "cse" | "ise" | "aiml" | "ece" | "eee" | "mech" | "civil" | "other";
+export type ResourceKind = "notes" | "pyq" | "lab" | "reference" | "other";
+
+export interface AcademicResource {
+  id: string;
+  title: string;
+  department: Department;
+  semester: number;
+  subject: string;
+  kind: ResourceKind;
+  url: string;
+  sharedBy?: string;
+  sharedById?: string;
+  createdAt: string;
+}

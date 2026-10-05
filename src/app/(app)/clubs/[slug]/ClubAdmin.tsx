@@ -53,7 +53,7 @@ export default function ClubAdmin({ slug }: { slug: string }) {
               textUnderlineOffset: 6,
             }}
           >
-            {t === "notice" ? "Post a notice" : "Add a gathering"}
+            {t === "notice" ? "Post a notice" : "Add an event"}
           </button>
         ))}
       </div>
@@ -82,15 +82,15 @@ function NoticeForm({ slug }: { slug: string }) {
       <label style={{ ...label, maxWidth: "14rem" }}>
         How important
         <select name="priority" defaultValue="info" style={field}>
-          <option value="info">Just so you know</option>
+          <option value="info">General</option>
           <option value="important">Important</option>
-          <option value="urgent">Urgent (lantern glows)</option>
+          <option value="urgent">Urgent</option>
         </select>
       </label>
       <button disabled={pending} style={submit}>
         {pending ? "Posting…" : "Post notice"}
       </button>
-      <Status state={state} done="Posted. It's floating on the river now." />
+      <Status state={state} done="Announcement published." />
     </form>
   );
 }
@@ -146,9 +146,9 @@ function EventForm({ slug }: { slug: string }) {
         <textarea name="description" rows={3} maxLength={4000} style={{ ...field, resize: "vertical" }} />
       </label>
       <button disabled={pending} style={submit}>
-        {pending ? "Launching…" : "Put a boat on the water"}
+        {pending ? "Creating…" : "Create event"}
       </button>
-      <Status state={state} done="Done. Your boat is on the river." />
+      <Status state={state} done="Event created." />
     </form>
   );
 }

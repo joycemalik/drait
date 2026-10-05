@@ -43,7 +43,7 @@ export default function CommunityView({
     <div>
       <header style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: "1rem", flexWrap: "wrap" }}>
         <div>
-          <p className="section-label">Under the banyan</p>
+          <p className="section-label">Discussions</p>
           <h1 className="font-display" style={{ fontSize: "2.6rem", fontWeight: 400, lineHeight: 1.05 }}>
             Community
           </h1>
@@ -132,7 +132,7 @@ export default function CommunityView({
 
       {list.length === 0 && (
         <p style={{ padding: "3rem 0", color: "var(--ink-soft)", textAlign: "center" }}>
-          {q ? "Nothing matches that yet." : "Nobody has started one here yet. You could be first."}
+          {q ? "Nothing matches that yet." : "No discussions yet. Start one."}
         </p>
       )}
     </div>

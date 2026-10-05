@@ -1,6 +1,6 @@
 # AIT Hub
 
-Everything happening at Dr. Ambedkar Institute of Technology, in one place: clubs, gatherings, notices, and the conversations between them. Built by students, open to anyone who wants to make it better.
+Everything happening at Dr. Ambedkar Institute of Technology, in one place: clubs, events, announcements, and the conversations between them. Built by students, open to anyone who wants to make it better.
 
 The front page is **the river**: the next two weeks flow past as water. Every event is a paper boat you can open and RSVP to, every club is a village on the bank (with smoke rising when something's on), and notices drift by as lanterns. The design borrows from Santiniketan: open air, handmade paper, ink and earth colours, nothing boxed in.
 

@@ -16,7 +16,7 @@ import {
 import type { ShellClub } from "./AppShell";
 
 const nav = [
-  { label: "The river", href: "/", icon: Waves },
+  { label: "Home", href: "/", icon: Waves },
   { label: "Today", href: "/today", icon: Sun },
   { label: "Clubs", href: "/clubs", icon: Users },
   { label: "Events", href: "/events", icon: CalendarDays },

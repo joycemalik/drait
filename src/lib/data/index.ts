@@ -5,7 +5,7 @@ import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { createClient } from "@/lib/supabase/server";
 import { getDemo } from "@/lib/demo";
 import { campusDate, campusTime, todayISO, addDays } from "@/lib/dates";
-import type { Announcement, Club, Discussion, Event, Opportunity } from "@/lib/types";
+import type { AcademicResource, Achievement, Announcement, Club, Discussion, Event, Opportunity } from "@/lib/types";
 
 /* eslint-disable @typescript-eslint/no-explicit-any -- rows are mapped field by field below */
 
@@ -200,6 +200,76 @@ export const getOpportunities = cache(async (): Promise<Opportunity[]> => {
   const sb = await createClient();
   return must(await sb.from("opportunities").select("*").order("deadline")).map(toOpportunity);
 });
+
+const toAchievement = (r: any): Achievement => ({
+  id: r.id,
+  title: r.title,
+  people: r.people,
+  team: r.team ?? undefined,
+  clubSlug: r.club_slug ?? undefined,
+  clubName: r.club_name ?? undefined,
+  clubColor: r.club_color ?? undefined,
+  category: r.category,
+  achievedOn: r.achieved_on,
+  description: r.description,
+  link: r.link ?? undefined,
+  verified: r.verified,
+});
+
+export const getAchievements = cache(async (): Promise<Achievement[]> => {
+  if (!isSupabaseConfigured) return (await demo()).achievements;
+  const sb = await createClient();
+  return must(await sb.from("achievements_view").select("*").order("achieved_on", { ascending: false })).map(toAchievement);
+});
+
+export const getAcademicResources = cache(async (): Promise<AcademicResource[]> => {
+  if (!isSupabaseConfigured) return [];
+  const sb = await createClient();
+  const rows = must(
+    await sb
+      .from("academic_resources")
+      .select("id, title, department, semester, subject, kind, url, created_at, submitted_by, profiles(full_name)")
+      .order("semester")
+      .order("subject")
+      .order("created_at", { ascending: false }),
+  ) as any[];
+  return rows.map((r) => ({
+    id: r.id,
+    title: r.title,
+    department: r.department,
+    semester: r.semester,
+    subject: r.subject,
+    kind: r.kind,
+    url: r.url,
+    sharedBy: r.profiles?.full_name ?? undefined,
+    sharedById: r.submitted_by ?? undefined,
+    createdAt: r.created_at,
+  }));
+});
+
+export interface Profile {
+  fullName: string;
+  branch: string;
+  year: string;
+  avatarUrl?: string;
+  email?: string;
+}
+
+/** The signed-in student's editable profile, or null when signed out. */
+export async function getProfile(): Promise<Profile | null> {
+  if (!isSupabaseConfigured) return null;
+  const sb = await createClient();
+  const { data } = await sb.auth.getUser();
+  if (!data.user) return null;
+  const { data: p } = await sb.from("profiles").select("full_name, branch, year, avatar_url").eq("id", data.user.id).maybeSingle();
+  return {
+    fullName: p?.full_name ?? "",
+    branch: p?.branch ?? "",
+    year: p?.year ?? "",
+    avatarUrl: p?.avatar_url ?? undefined,
+    email: data.user.email,
+  };
+}
 
 export interface Viewer {
   id: string;

@@ -202,7 +202,7 @@ function EventBody({
           {going ? "You're going ✓" : left === 0 ? "Full" : "I'll be there"}
         </button>
         <span style={{ fontSize: "0.85rem", color: "var(--ink-soft)" }}>
-          {count === 0 ? "Be the first to say yes" : `${count} going`}
+          {count === 0 ? "No RSVPs yet" : `${count} going`}
           {left !== null && left > 0 ? ` · ${left} ${left === 1 ? "seat" : "seats"} left` : ""}
         </span>
       </div>

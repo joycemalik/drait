@@ -133,61 +133,125 @@
   margin-top: 2px;
 }
 
-/* Sky */
-.sky {
-  --sky-top: #d7e4e3;
-  --sky-mid: #ebe9df;
+/* Hero: words on the left, the ink sketch on the right */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  align-items: center;
+  gap: 1rem;
+  padding: 6.5rem clamp(1.25rem, 5vw, 4.5rem) 2rem;
+  overflow: hidden;
 }
-.sky[data-phase="dawn"] {
-  --sky-top: #efcfb1;
-  --sky-mid: #f2e3cf;
+.hero-words {
+  position: relative;
+  z-index: 1;
+  max-width: 34rem;
 }
-.sky[data-phase="golden"] {
-  --sky-top: #eec888;
-  --sky-mid: #f2dcb8;
+.hero-sketch .hero-sketch-art {
+  width: 112%;
+  max-width: none;
+  margin: 0 0 -4% -2%;
 }
-.sky[data-phase="night"] {
-  --sky-top: #c9bfd4;
-  --sky-mid: #e8dfd9;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="day"]) .sky {
-    --sky-top: #243049;
-    --sky-mid: #1a1f2b;
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding-top: 6rem;
   }
-  :root:not([data-theme="day"]) .sky[data-phase="golden"] {
-    --sky-top: #4a3a33;
-    --sky-mid: #221f24;
+  .hero-sketch .hero-sketch-art {
+    width: 118%;
+    margin-left: -9%;
   }
-}
-:root[data-theme="dusk"] .sky {
-  --sky-top: #243049;
-  --sky-mid: #1a1f2b;
-}
-:root[data-theme="dusk"] .sky[data-phase="golden"] {
-  --sky-top: #4a3a33;
-  --sky-mid: #221f24;
 }
 
-.bird {
-  animation: bird-cross 70s linear infinite;
+/* Time of day tints the watercolour sky and swaps sun for moon */
+.sky {
+  --wash-sky: var(--river);
 }
-@keyframes bird-cross {
-  from {
-    transform: translateX(-10vw);
-  }
+.sky[data-phase="dawn"] {
+  --wash-sky: #e3a97c;
+}
+.sky[data-phase="golden"] {
+  --wash-sky: var(--turmeric);
+}
+.sky[data-phase="night"] {
+  --wash-sky: var(--jamun);
+}
+.sky .sky-moon,
+.sky[data-phase="night"] .sky-sun {
+  display: none;
+}
+.sky[data-phase="night"] .sky-moon {
+  display: inline;
+}
+
+.hero-sketch-art {
+  aspect-ratio: 900 / 720;
+}
+.hero-sketch-art svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.hero-sketch-art .ink-fade {
+  fill: var(--ink);
+}
+.hero-sketch-art .ink-draw {
+  fill: none;
+  stroke: var(--ink);
+  stroke-linecap: round;
+}
+
+/* The drawing builds itself: lines are drawn by the pen, filled strokes settle in */
+.ink-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: ink-draw 0.9s ease-out forwards;
+}
+@keyframes ink-draw {
   to {
-    transform: translateX(110vw);
+    stroke-dashoffset: 0;
   }
 }
-.bird path {
-  animation: wing 1.4s ease-in-out infinite;
-  transform-box: fill-box;
-  transform-origin: center;
+.ink-fade {
+  opacity: 0;
+  animation: ink-fade 0.6s ease-out forwards;
 }
-@keyframes wing {
-  50% {
-    transform: scaleY(0.55);
+@keyframes ink-fade {
+  to {
+    opacity: 1;
+  }
+}
+.washes {
+  opacity: 0;
+  animation: ink-fade 1.6s ease-out 2.6s forwards;
+}
+
+.ink-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.4rem 0.8rem;
+  border-radius: 46% 54% 50% 50% / 60% 48% 52% 40%;
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: transform 0.25s;
+}
+.ink-button:hover {
+  transform: rotate(-1.2deg) translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ink-draw {
+    stroke-dashoffset: 0;
+  }
+  .ink-fade,
+  .washes {
+    opacity: 1;
   }
 }
 
@@ -196,8 +260,9 @@
   .boat,
   .lantern,
   .smoke,
-  .bird,
-  .bird path {
+  .ink-draw,
+  .ink-fade,
+  .washes {
     animation: none !important;
   }
 }

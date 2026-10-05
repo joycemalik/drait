@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="AIT Hub">
+  <!-- paper disc -->
+  <path d="M64 6c32 0 58 25 58 58s-26 58-58 58S6 96 6 64 32 6 64 6Z" fill="#F3ECDF"/>
+  <!-- sal leaf -->
+  <path d="M64 16C40 31 30 52 34 73c3 15 15 23 30 23s27-8 30-23c4-21-6-42-30-57Z" fill="#5E7A3A"/>
+  <path d="M64 16C40 31 30 52 34 73c3 15 15 23 30 23s27-8 30-23c4-21-6-42-30-57Z" fill="none" stroke="#1F2A44" stroke-width="2.4" stroke-linejoin="round"/>
+  <!-- midrib and veins -->
+  <path d="M64 24c-1.6 22-1 45 .6 70" fill="none" stroke="#F3ECDF" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M63.4 42c-6-3-11-6-15-11M63.6 56c-8-3-14-6-19-11M63.8 70c-8-2-14-5-19-9M64.6 46c6-3 11-7 14-12M64.8 60c7-3 13-7 17-12M65 74c7-2 13-5 17-10" fill="none" stroke="#F3ECDF" stroke-width="1.6" stroke-linecap="round" opacity=".8"/>
+  <!-- water -->
+  <path d="M14 98c8-6 16-6 24 0s16 6 24 0 16-6 24 0 16 6 24 0 8-4 12-2" fill="none" stroke="#4F7C8A" stroke-width="4.2" stroke-linecap="round"/>
+  <path d="M26 110c7-5 14-5 21 0s14 5 21 0 14-5 21 0 10 3 14 0" fill="none" stroke="#4F7C8A" stroke-width="3.2" stroke-linecap="round" opacity=".6"/>
+</svg>

@@ -69,6 +69,7 @@ export default function Navbar({
         <ThemeToggle />
         {viewer ? (
           <form action="/auth/signout" method="post" style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+            <Link href="/profile" aria-label="Your profile" style={{ lineHeight: 0 }}>
             {viewer.avatarUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img src={viewer.avatarUrl} alt="" width={30} height={30} style={{ borderRadius: "50%" }} referrerPolicy="no-referrer" />
@@ -89,6 +90,7 @@ export default function Navbar({
                 {viewer.name.slice(0, 1)}
               </span>
             )}
+            </Link>
             <button style={{ fontSize: "0.8rem", color: "var(--ink-soft)" }}>Sign out</button>
           </form>
         ) : (

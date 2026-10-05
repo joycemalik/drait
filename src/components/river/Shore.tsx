@@ -19,23 +19,19 @@ export default function Shore({
       </svg>
 
       <div style={{ maxWidth: "70rem", margin: "0 auto", padding: "4rem clamp(1.25rem, 6vw, 5rem) 3rem" }}>
-        <p className="font-display" style={{ fontStyle: "italic", fontSize: "clamp(1.3rem, 2.6vw, 1.9rem)", lineHeight: 1.35, maxWidth: "40rem" }}>
-          “Where the mind is without fear and the head is held high…”
-        </p>
-        <p style={{ marginTop: "0.5rem", fontSize: "0.85rem", color: "var(--ink-soft)" }}>Rabindranath Tagore, founder of Santiniketan</p>
 
         <div style={{ display: "flex", flexWrap: "wrap", gap: "3rem 5rem", marginTop: "3.5rem" }}>
           <div style={{ maxWidth: "24rem" }}>
             <h3 className="font-display" style={{ fontSize: "1.5rem", fontWeight: 500 }}>
-              Step in
+              Get started
             </h3>
             <p style={{ marginTop: "0.5rem", fontSize: "0.92rem", lineHeight: 1.6, color: "var(--ink-soft)" }}>
-              Say you&apos;ll come to things, join your clubs, ask the seniors anything. One Google sign-in.
+              RSVP to events, join clubs and ask questions. Sign in with your Google account.
             </p>
             <div style={{ marginTop: "1rem" }}>
               {signedIn ? (
                 <Link href="/today" style={{ color: "var(--ink)", fontWeight: 600 }}>
-                  Your day at AIT →
+                  Go to your dashboard →
                 </Link>
               ) : (
                 <AuthButton
@@ -50,16 +46,15 @@ export default function Shore({
 
           <div style={{ maxWidth: "26rem" }}>
             <h3 className="font-display" style={{ fontSize: "1.5rem", fontWeight: 500 }}>
-              Build this with us
+              Contribute
             </h3>
             <p style={{ marginTop: "0.5rem", fontSize: "0.92rem", lineHeight: 1.6, color: "var(--ink-soft)" }}>
-              AIT Hub is open source and made by students. Add your club, fix something that bugs you, or draw the next
-              village on the bank.
-              {contributors ? ` ${contributors} people have pitched in so far.` : ""}
+              AIT Hub is open source and built by students. Add your club, report issues or submit improvements on GitHub.
+              {contributors ? ` ${contributors} contributors so far.` : ""}
             </p>
             {repoUrl && (
               <a href={repoUrl} target="_blank" rel="noreferrer" style={{ display: "inline-block", marginTop: "1rem", color: "var(--ink)", fontWeight: 600 }}>
-                Read the code on GitHub ↗
+                View on GitHub ↗
               </a>
             )}
           </div>

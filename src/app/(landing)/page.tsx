@@ -3,6 +3,7 @@ import Mark from "@/components/Mark";
 import ThemeToggle from "@/components/ThemeToggle";
 import AuthButton from "@/components/AuthButton";
 import Sky from "@/components/river/Sky";
+import HeroSketch from "@/components/river/HeroSketch";
 import River from "@/components/river/River";
 import Voices from "@/components/river/Voices";
 import Shore from "@/components/river/Shore";
@@ -86,6 +87,7 @@ export default async function Landing() {
       </nav>
 
       <Sky
+        sketch={<HeroSketch />}
         todayCount={events.filter((e) => e.date === today).length}
         fortnightCount={events.length}
         clubCount={clubs.length}

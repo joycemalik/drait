@@ -74,10 +74,10 @@ export default async function ClubPage({ params }: { params: Promise<{ slug: str
 
       <div className="dash-grid-2" style={{ gridTemplateColumns: undefined, marginTop: "3rem", gap: "3rem" }}>
         <section>
-          <p className="section-label">Gatherings ahead</p>
+          <p className="section-label">Upcoming events</p>
           <div className="wobble-rule" style={{ margin: "0.3rem 0 0.4rem" }} />
           {events.length === 0 ? (
-            <p style={{ color: "var(--ink-soft)", padding: "1rem 0" }}>Nothing planned yet. Check back soon.</p>
+            <p style={{ color: "var(--ink-soft)", padding: "1rem 0" }}>No upcoming events.</p>
           ) : (
             <ol style={{ listStyle: "none", margin: 0, padding: 0 }}>
               {events.map((ev) => (
