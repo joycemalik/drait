@@ -1,0 +1,317 @@
+.doc {
+  max-width: 60rem;
+}
+
+/* Header */
+.doc-head {
+  display: grid;
+  gap: 1.5rem;
+  align-items: end;
+  padding-bottom: 1rem;
+}
+.doc-head--art {
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+}
+.doc-title {
+  font-size: clamp(2.6rem, 6vw, 4.2rem);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -0.02em;
+  margin-top: 0.3rem;
+}
+.doc-lede {
+  margin-top: 1rem;
+  font-size: 1.08rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  max-width: 36rem;
+}
+.doc-meta {
+  margin-top: 1rem;
+  font-size: 0.82rem;
+  color: var(--ink-faint);
+  max-width: 36rem;
+  line-height: 1.6;
+}
+.doc-art {
+  align-self: center;
+}
+@media (max-width: 820px) {
+  .doc-head--art {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Body: contents rail + content */
+.doc-body {
+  display: grid;
+  grid-template-columns: 11.5rem minmax(0, 1fr);
+  gap: 3rem;
+  margin-top: 2.5rem;
+}
+.doc-toc {
+  position: sticky;
+  top: 5rem;
+  align-self: start;
+}
+.doc-toc ol {
+  list-style: none;
+  margin: 0.6rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.15rem;
+}
+.doc-toc a {
+  display: flex;
+  gap: 0.55rem;
+  padding: 0.28rem 0;
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+.doc-toc a:hover {
+  color: var(--ink);
+}
+.doc-toc-n {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-style: italic;
+  color: var(--ink-faint);
+  min-width: 1.4rem;
+}
+@media (max-width: 820px) {
+  .doc-body {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .doc-toc {
+    position: static;
+  }
+  .doc-toc ol {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.1rem 1rem;
+  }
+}
+
+/* Sections */
+.doc-section {
+  scroll-margin-top: 5rem;
+}
+.doc-section + .doc-section {
+  margin-top: 3.4rem;
+}
+.doc-section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  margin-bottom: 0.3rem;
+}
+.doc-n {
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--laterite);
+}
+.doc-section-head h2 {
+  font-size: clamp(1.5rem, 3vw, 1.95rem);
+  font-weight: 400;
+  line-height: 1.15;
+}
+.doc-section-body {
+  margin-top: 1rem;
+}
+.doc-section-body > p {
+  font-size: 0.98rem;
+  line-height: 1.75;
+  max-width: 38rem;
+}
+.doc-section-body > p + p,
+.doc-section-body > * + p {
+  margin-top: 0.8rem;
+}
+.doc-section-body code,
+.doc-content code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.86em;
+  padding: 0.05em 0.35em;
+  background: var(--paper-deep);
+  border-radius: 6px;
+}
+.doc-section-body a {
+  color: var(--ink);
+  text-decoration-color: var(--turmeric);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+}
+
+/* Points */
+.doc-points {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1.4rem 2rem;
+}
+.doc-points li {
+  display: flex;
+  gap: 0.9rem;
+  align-items: flex-start;
+}
+.doc-point-icon {
+  width: 2.6rem;
+  height: 2.6rem;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+  background: color-mix(in srgb, var(--sal) 16%, transparent);
+  border-radius: 46% 54% 42% 58% / 55% 45% 55% 45%;
+}
+.doc-points li:nth-child(3n + 2) .doc-point-icon {
+  background: color-mix(in srgb, var(--turmeric) 20%, transparent);
+  border-radius: 58% 42% 52% 48% / 44% 56% 44% 56%;
+}
+.doc-points li:nth-child(3n) .doc-point-icon {
+  background: color-mix(in srgb, var(--river) 18%, transparent);
+  border-radius: 50% 50% 40% 60% / 60% 40% 60% 40%;
+}
+.doc-point-title {
+  font-weight: 600;
+  font-size: 0.96rem;
+}
+.doc-point-text {
+  margin-top: 0.2rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--ink-soft);
+}
+
+/* Matrix */
+.doc-matrix-wrap {
+  overflow-x: auto;
+}
+.doc-matrix {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 30rem;
+  font-size: 0.9rem;
+}
+.doc-matrix thead th {
+  font-style: italic;
+  font-weight: 400;
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  padding: 0 0.6rem 0.7rem;
+  text-align: center;
+  vertical-align: bottom;
+  white-space: nowrap;
+}
+.doc-matrix tbody th {
+  text-align: left;
+  font-weight: 400;
+  padding: 0.65rem 1rem 0.65rem 0;
+  color: var(--ink);
+}
+.doc-matrix td {
+  text-align: center;
+  padding: 0.65rem 0.6rem;
+}
+.doc-matrix tbody tr {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='4' viewBox='0 0 240 4'><path d='M0 2 C 40 1, 80 3, 120 2 S 200 1, 240 2' fill='none' stroke='%238a8574' stroke-opacity='0.3' stroke-width='1'/></svg>");
+  background-repeat: repeat-x;
+  background-position: bottom;
+  background-size: 240px 4px;
+}
+.doc-yes {
+  color: var(--sal);
+  display: inline-flex;
+}
+.doc-no {
+  color: var(--ink-faint);
+  opacity: 0.6;
+  display: inline-flex;
+}
+
+/* Steps */
+.doc-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+.doc-steps li {
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+.doc-step-n {
+  font-size: 1.6rem;
+  line-height: 1;
+  font-style: italic;
+  color: var(--laterite);
+  min-width: 1.2rem;
+}
+
+/* Paper note for commands */
+.doc-note {
+  margin-top: 0.7rem;
+  padding: 1rem 1.2rem;
+  background: var(--paper-deep);
+  border-radius: 14px 20px 12px 18px / 18px 12px 20px 14px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  white-space: pre;
+  overflow-x: auto;
+  transform: rotate(-0.3deg);
+}
+
+/* Big figures */
+.doc-figures {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: 1.5rem;
+}
+.doc-figure-value {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 1;
+  font-weight: 400;
+}
+.doc-figure-label {
+  margin-top: 0.35rem;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
+
+.doc-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.doc-chips li {
+  font-size: 0.82rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background: var(--paper-deep);
+  color: var(--ink-soft);
+}
+
+.doc-credit {
+  margin-top: 4rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 1rem;
+  font-size: 0.8rem;
+  color: var(--ink-faint);
+}
+.doc-credit a {
+  color: var(--ink-soft);
+}

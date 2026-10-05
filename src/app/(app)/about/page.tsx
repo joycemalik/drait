@@ -1,30 +1,20 @@
 import Link from "next/link";
 import { COLLEGE, DEPARTMENTS, DEVELOPER } from "@/lib/college";
+import { DocPage, DocSection, Matrix, Points, Steps } from "@/components/docs/Doc";
+import EmailAnatomy from "@/components/docs/EmailAnatomy";
+import SystemSketch from "@/components/docs/SystemSketch";
+import HeroSketch from "@/components/river/HeroSketch";
+import InkIcon from "@/components/InkIcons";
 
 export const metadata = {
   title: "About",
   description: "What AIT Hub is, how it works, who can sign in, and how to contribute.",
 };
 
-const h2: React.CSSProperties = { fontSize: "1.7rem", fontWeight: 400, lineHeight: 1.15, scrollMarginTop: "5rem" };
-const p: React.CSSProperties = { fontSize: "0.98rem", lineHeight: 1.75, marginTop: "0.7rem" };
-const li: React.CSSProperties = { fontSize: "0.95rem", lineHeight: 1.65 };
-const code: React.CSSProperties = {
-  display: "block",
-  marginTop: "0.6rem",
-  padding: "0.8rem 1rem",
-  background: "var(--paper-deep)",
-  borderRadius: "12px 16px 10px 14px",
-  fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
-  fontSize: "0.85rem",
-  overflowX: "auto",
-  whiteSpace: "pre",
-};
-
-const sections = [
+const toc = [
   ["features", "What you can do"],
   ["sign-in", "Who can sign in"],
-  ["roles", "Roles and permissions"],
+  ["roles", "Roles"],
   ["how", "How it works"],
   ["data", "Your data"],
   ["contribute", "Contribute"],
@@ -32,231 +22,205 @@ const sections = [
   ["contact", "Contact"],
 ] as const;
 
-const roles: [string, string][] = [
-  ["Anyone", "Browse clubs, events, announcements, discussions, study resources and achievements."],
-  ["Signed-in student", "RSVP, join clubs, post and reply in Community, share study resources, submit achievements, edit their profile."],
-  ["Club lead", "Everything above, plus post announcements and create events for their club, and verify achievements linked to it."],
-  ["Site admin", "Manage all clubs, opportunities and moderation."],
-];
-
 export default function AboutPage() {
   return (
-    <article style={{ maxWidth: "44rem" }}>
-      <h1 className="font-display" style={{ fontSize: "2.8rem", fontWeight: 400, lineHeight: 1.05 }}>
-        About AIT Hub
-      </h1>
-      <p style={{ ...p, fontSize: "1.08rem", color: "var(--ink-soft)" }}>
-        AIT Hub brings the student side of {COLLEGE.name} into one place: club events, announcements, discussions, study
-        resources and achievements. It is built and maintained by students, and its code is open source.
-      </p>
-      <p style={{ ...p, fontSize: "0.85rem", color: "var(--ink-faint)" }}>
-        AIT Hub is a student project. It is not an official website of {COLLEGE.short}; for official information, visit{" "}
-        <a href={COLLEGE.website} target="_blank" rel="noreferrer">
-          drait.edu.in
-        </a>
-        .
-      </p>
-
-      <nav aria-label="On this page" style={{ margin: "2rem 0 0", display: "flex", flexWrap: "wrap", gap: "0.4rem 1.1rem", fontSize: "0.88rem" }}>
-        {sections.map(([id, label]) => (
-          <a key={id} href={`#${id}`} style={{ color: "var(--ink-soft)" }}>
-            {label}
+    <DocPage
+      eyebrow="About"
+      title="AIT Hub"
+      toc={toc}
+      lede={
+        <>
+          Club events, announcements, discussions, study resources and achievements at {COLLEGE.name}, in one place.
+          Run by students, open source, free to use.
+        </>
+      }
+      meta={
+        <>
+          A student project, not an official website of {COLLEGE.short}. For official information, visit{" "}
+          <a href={COLLEGE.website} target="_blank" rel="noreferrer" style={{ color: "var(--ink-soft)" }}>
+            drait.edu.in
           </a>
-        ))}
-      </nav>
-      <div className="wobble-rule" style={{ margin: "1rem 0 2.2rem" }} />
+          .
+        </>
+      }
+      art={
+        <div className="sky" data-phase="day">
+          <HeroSketch />
+        </div>
+      }
+    >
+      <DocSection id="features" n={1} title="What you can do">
+        <Points
+          items={[
+            { icon: "calendar", title: "Never miss an event", text: "Every club event for the next two weeks, with RSVP and add-to-calendar." },
+            { icon: "people", title: "Follow your clubs", text: "Join clubs and see their announcements on your Today page." },
+            { icon: "chat", title: "Ask and answer", text: "Discussions with seniors and classmates. Replies appear live." },
+            { icon: "book", title: "Share study material", text: "Notes, past papers and lab manuals by department and semester." },
+            { icon: "award", title: "Celebrate wins", text: "Submit achievements; club leads verify them." },
+            { icon: "user", title: "Your profile", text: "Department, skills and links, so people know who's asking." },
+          ]}
+        />
+      </DocSection>
 
-      <section id="features" style={{ scrollMarginTop: "5rem" }}>
-        <h2 className="font-display" style={h2}>
-          What you can do
-        </h2>
-        <ul style={{ marginTop: "0.8rem", paddingLeft: "1.2rem", listStyle: "disc", display: "grid", gap: "0.4rem" }}>
-          <li style={li}>See every club event for the next two weeks on the home page, and RSVP or add them to your calendar.</li>
-          <li style={li}>Join clubs and get their announcements on your Today page.</li>
-          <li style={li}>Ask questions and help others in Community. Replies appear live.</li>
-          <li style={li}>Share and find notes, past papers and lab manuals by department and semester.</li>
-          <li style={li}>Submit achievements; club leads verify them.</li>
-          <li style={li}>Keep a profile with your department, skills and links.</li>
-        </ul>
-      </section>
-
-      <section id="sign-in" style={{ marginTop: "2.6rem", scrollMarginTop: "5rem" }}>
-        <h2 className="font-display" style={h2}>
-          Who can sign in
-        </h2>
-        <p style={p}>
-          Anyone can browse. To RSVP, post or share, sign in with your <strong>Dr. AIT college Google account</strong>, any
-          address ending in <code>drait.edu.in</code>, including department addresses such as{" "}
-          <code>1da23cs069@cs.drait.edu.in</code>. Personal Gmail accounts are not accepted.
+      <DocSection id="sign-in" n={2} title="Who can sign in">
+        <p>
+          Anyone can browse. To RSVP, post or share, sign in with your <strong>Dr. AIT college Google account</strong>:
+          any address ending in <code>drait.edu.in</code>, including department addresses. Personal Gmail accounts are
+          not accepted.
         </p>
-        <p style={p}>
-          Your USN, department and joining year are read from your college email when you first sign in, and your
-          profile is marked as a verified Dr. AIT student. If you are faculty or staff without a college Google account,
-          contact us below.
+        <p>The first time you sign in, your profile is filled in from your email address:</p>
+        <EmailAnatomy />
+        <p style={{ fontSize: "0.88rem", color: "var(--ink-soft)" }}>
+          Faculty or staff without a college Google account can <a href="#contact">ask to be added</a>.
         </p>
-      </section>
+      </DocSection>
 
-      <section id="roles" style={{ marginTop: "2.6rem", scrollMarginTop: "5rem" }}>
-        <h2 className="font-display" style={h2}>
-          Roles and permissions
-        </h2>
-        <dl style={{ marginTop: "0.9rem", display: "grid", gap: "0.9rem" }}>
-          {roles.map(([role, can]) => (
-            <div key={role}>
-              <dt style={{ fontWeight: 600, fontSize: "0.95rem" }}>{role}</dt>
-              <dd style={{ margin: "0.15rem 0 0", fontSize: "0.92rem", color: "var(--ink-soft)", lineHeight: 1.6 }}>{can}</dd>
+      <DocSection id="roles" n={3} title="Roles">
+        <Matrix
+          cols={["Anyone", "Student", "Club lead", "Admin"]}
+          rows={[
+            ["Browse everything", [true, true, true, true]],
+            ["RSVP and join clubs", [false, true, true, true]],
+            ["Post, reply and nod in Community", [false, true, true, true]],
+            ["Share resources, submit achievements", [false, true, true, true]],
+            ["Post announcements and events for their club", [false, false, true, true]],
+            ["Verify achievements for their club", [false, false, true, true]],
+            ["Manage clubs and opportunities", [false, false, false, true]],
+          ]}
+        />
+        <p style={{ marginTop: "1rem", fontSize: "0.9rem", color: "var(--ink-soft)" }}>
+          These rules are enforced by the database itself, not just the website. To get your club&apos;s leads added,{" "}
+          <a href="#contact">write to us</a>.
+        </p>
+      </DocSection>
+
+      <DocSection id="how" n={4} title="How it works">
+        <SystemSketch />
+        <Points
+          items={[
+            { icon: "code", title: "Website", text: "Next.js and React, with server rendering, hosted on Vercel." },
+            { icon: "server", title: "Database", text: "PostgreSQL on Supabase (Mumbai). Every table has row-level security." },
+            { icon: "shield", title: "Sign-in", text: "Google via Supabase Auth. A database rule rejects accounts outside drait.edu.in." },
+            { icon: "leaf", title: "Where the code lives", text: <>Pages in <code>src/app</code>, reads in <code>src/lib/data</code>, writes in <code>src/lib/actions.ts</code>, rules in <code>supabase/migrations</code>.</> },
+          ]}
+        />
+      </DocSection>
+
+      <DocSection id="data" n={5} title="Your data">
+        <Points
+          items={[
+            { icon: "lock", title: "Only what's needed", text: "Your name, college email, photo, profile details and what you post or RSVP to." },
+            { icon: "eye", title: "Private where it matters", text: "Your email and RSVPs aren't shown to others. Your USN is visible only to signed-in students." },
+            { icon: "shield", title: "No ads, never sold", text: "No advertising, no third-party tracking, nothing shared for marketing." },
+            { icon: "trash", title: "Yours to remove", text: <>Edit anytime on <Link href="/profile">your profile</Link>, or ask us to delete your account.</> },
+          ]}
+        />
+        <p style={{ marginTop: "1.2rem" }}>
+          Details in the <Link href="/privacy">privacy policy</Link> and <Link href="/terms">terms of use</Link>.
+        </p>
+      </DocSection>
+
+      <DocSection id="contribute" n={6} title="Contribute">
+        <p>
+          AIT Hub is MIT licensed and its code is on{" "}
+          <a href={DEVELOPER.repo} target="_blank" rel="noreferrer">
+            GitHub
+          </a>
+          . Fix a bug, add a feature, or improve these docs.
+        </p>
+        <div style={{ marginTop: "1.2rem" }}>
+          <Steps
+            items={[
+              <>
+                Get the code and start it. It runs on sample data until you connect a database.
+                <div className="doc-note">{`git clone ${DEVELOPER.repo}.git\ncd drait\nnpm install\nnpm run dev`}</div>
+              </>,
+              <>
+                Open <code>http://localhost:3000</code>. To use a real database, follow the README to connect your own
+                free Supabase project.
+              </>,
+              <>
+                Make your change on a branch and open a pull request. <a href={`${DEVELOPER.repo}/blob/main/CONTRIBUTING.md`}>CONTRIBUTING.md</a>{" "}
+                has the checklist.
+              </>,
+            ]}
+          />
+        </div>
+        <p style={{ marginTop: "1.2rem", fontSize: "0.9rem", color: "var(--ink-soft)" }}>
+          Found a problem? <a href={`${DEVELOPER.repo}/issues`}>Open an issue</a>.
+        </p>
+      </DocSection>
+
+      <DocSection id="college" n={7} title="About Dr. AIT">
+        <div className="doc-figures">
+          {[
+            [String(COLLEGE.founded), "Founded"],
+            ["A+", "NAAC grade"],
+            [String(COLLEGE.schools.length), "Schools"],
+            [String(DEPARTMENTS.length - 1), "Departments"],
+          ].map(([v, l]) => (
+            <div key={l}>
+              <div className="doc-figure-value">{v}</div>
+              <div className="doc-figure-label">{l}</div>
             </div>
           ))}
-        </dl>
-        <p style={{ ...p, fontSize: "0.9rem", color: "var(--ink-soft)" }}>
-          These rules are enforced by the database itself (row-level security), not only by the website. A club that
-          wants its leads added can write to us.
+        </div>
+        <p style={{ marginTop: "1.4rem" }}>
+          Founded by {COLLEGE.founder}, {COLLEGE.short} is an {COLLEGE.status.toLowerCase()} institute affiliated to{" "}
+          {COLLEGE.affiliation}. It is accredited by NBA, approved by AICTE and recognised by UGC, with {COLLEGE.nirf}.
         </p>
-      </section>
-
-      <section id="how" style={{ marginTop: "2.6rem", scrollMarginTop: "5rem" }}>
-        <h2 className="font-display" style={h2}>
-          How it works
-        </h2>
-        <ul style={{ marginTop: "0.8rem", paddingLeft: "1.2rem", listStyle: "disc", display: "grid", gap: "0.4rem" }}>
-          <li style={li}>
-            <strong>Website:</strong> Next.js (React) with server rendering and server actions, hosted on Vercel.
-          </li>
-          <li style={li}>
-            <strong>Database:</strong> PostgreSQL on Supabase, in the Mumbai region. Every table has row-level security.
-          </li>
-          <li style={li}>
-            <strong>Sign-in:</strong> Google, through Supabase Auth. A database rule rejects accounts outside{" "}
-            <code>drait.edu.in</code>.
-          </li>
-          <li style={li}>
-            <strong>Files:</strong> profile photos in Supabase Storage, resized in your browser before upload.
-          </li>
-          <li style={li}>
-            <strong>Live updates:</strong> Supabase Realtime for new replies in discussions.
-          </li>
-        </ul>
-        <p style={p}>
-          The code is laid out so it is easy to find your way: pages live in <code>src/app</code>, every read goes
-          through <code>src/lib/data</code>, every write through <code>src/lib/actions.ts</code>, and the database
-          schema and permission rules are in <code>supabase/migrations</code>.
-        </p>
-      </section>
-
-      <section id="data" style={{ marginTop: "2.6rem", scrollMarginTop: "5rem" }}>
-        <h2 className="font-display" style={h2}>
-          Your data
-        </h2>
-        <p style={p}>
-          We store your name, college email, Google profile photo, the profile details you add, and what you post or
-          RSVP to. Nothing is sold, there are no ads, and there is no third-party tracking. Your USN is visible only to
-          signed-in students. Read the full <Link href="/privacy">privacy policy</Link> and{" "}
-          <Link href="/terms">terms of use</Link>.
-        </p>
-      </section>
-
-      <section id="contribute" style={{ marginTop: "2.6rem", scrollMarginTop: "5rem" }}>
-        <h2 className="font-display" style={h2}>
-          Contribute
-        </h2>
-        <p style={p}>
-          AIT Hub is MIT licensed. Fix a bug, add a feature, or improve the docs. The code is at{" "}
-          <a href={DEVELOPER.repo} target="_blank" rel="noreferrer">
-            github.com/joycemalik/drait
-          </a>
-          . To run it on your computer (it uses sample data until you connect a database):
-        </p>
-        <code style={code}>{`git clone ${DEVELOPER.repo}.git\ncd drait\nnpm install\nnpm run dev`}</code>
-        <p style={p}>
-          Then open <code>http://localhost:3000</code>. The README covers connecting your own free Supabase project,
-          and <a href={`${DEVELOPER.repo}/blob/main/CONTRIBUTING.md`}>CONTRIBUTING.md</a> explains how to send a pull
-          request. Found a problem? <a href={`${DEVELOPER.repo}/issues`}>Open an issue</a>.
-        </p>
-      </section>
-
-      <section id="college" style={{ marginTop: "2.6rem", scrollMarginTop: "5rem" }}>
-        <h2 className="font-display" style={h2}>
-          About Dr. AIT
-        </h2>
-        <p style={p}>
-          {COLLEGE.name} was founded in {COLLEGE.founded} by {COLLEGE.founder}. It is an {COLLEGE.status.toLowerCase()}{" "}
-          institute affiliated to {COLLEGE.affiliation}, accredited {COLLEGE.accreditation.join(", ")}, with{" "}
-          {COLLEGE.nirf}.
-        </p>
-        <dl style={{ marginTop: "1rem", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(13rem, 1fr))", gap: "1rem 1.5rem" }}>
-          <div>
-            <dt className="section-label">Address</dt>
-            <dd style={{ margin: "0.2rem 0 0", fontSize: "0.92rem", lineHeight: 1.55 }}>{COLLEGE.address}</dd>
-          </div>
-          <div>
-            <dt className="section-label">Programmes</dt>
-            <dd style={{ margin: "0.2rem 0 0", fontSize: "0.92rem" }}>{COLLEGE.programmes.join(", ")}</dd>
-          </div>
-          <div>
-            <dt className="section-label">Placements {COLLEGE.placements.year}</dt>
-            <dd style={{ margin: "0.2rem 0 0", fontSize: "0.92rem", lineHeight: 1.55 }}>
-              {COLLEGE.placements.placed} placed, {COLLEGE.placements.recruiters} recruiters, average{" "}
-              {COLLEGE.placements.average}, highest {COLLEGE.placements.highest}
-            </dd>
-          </div>
-          <div>
-            <dt className="section-label">College office</dt>
-            <dd style={{ margin: "0.2rem 0 0", fontSize: "0.92rem", lineHeight: 1.55 }}>
-              {COLLEGE.enquiry.phone} · {COLLEGE.enquiry.email}
-              <br />
-              Admissions: {COLLEGE.enquiry.admissions}
-            </dd>
-          </div>
-        </dl>
-        <p className="section-label" style={{ marginTop: "1.4rem" }}>
-          Schools
-        </p>
-        <ul style={{ marginTop: "0.3rem", paddingLeft: "1.2rem", listStyle: "disc", display: "grid", gap: "0.2rem" }}>
-          {COLLEGE.schools.map((s) => (
-            <li key={s} style={li}>
-              {s}
-            </li>
-          ))}
-        </ul>
-        <p className="section-label" style={{ marginTop: "1.4rem" }}>
+        <div style={{ marginTop: "1.4rem", display: "flex", gap: "0.8rem", alignItems: "flex-start" }}>
+          <span style={{ color: "var(--laterite)", marginTop: 2 }}>
+            <InkIcon name="leaf" size={20} />
+          </span>
+          <p style={{ fontSize: "0.92rem", lineHeight: 1.6 }}>
+            {COLLEGE.address}
+            <br />
+            <span style={{ color: "var(--ink-soft)" }}>
+              Office {COLLEGE.enquiry.phone} · {COLLEGE.enquiry.email} · Admissions {COLLEGE.enquiry.admissions}
+            </span>
+          </p>
+        </div>
+        <p className="section-label" style={{ marginTop: "1.6rem", marginBottom: "0.5rem" }}>
           Departments
         </p>
-        <p style={{ ...p, marginTop: "0.3rem", fontSize: "0.92rem", color: "var(--ink-soft)" }}>
-          {DEPARTMENTS.filter((d) => d.id !== "other")
-            .map((d) => d.name)
-            .join(" · ")}
+        <ul className="doc-chips">
+          {DEPARTMENTS.filter((d) => d.id !== "other").map((d) => (
+            <li key={d.id}>{d.name}</li>
+          ))}
+        </ul>
+        <p style={{ marginTop: "1rem", fontSize: "0.8rem", color: "var(--ink-faint)" }}>
+          From drait.edu.in and public listings, October 2026. Something out of date? <a href="#contact">Tell us</a>.
         </p>
-        <p style={{ ...p, fontSize: "0.8rem", color: "var(--ink-faint)" }}>
-          Source: <a href={COLLEGE.website}>drait.edu.in</a> and public listings, October 2026. If something is out of
-          date, tell us.
-        </p>
-      </section>
+      </DocSection>
 
-      <section id="contact" style={{ marginTop: "2.6rem", scrollMarginTop: "5rem" }}>
-        <h2 className="font-display" style={h2}>
-          Contact
-        </h2>
-        <p style={p}>
-          Questions, bugs, getting your club on AIT Hub, or adding club leads: write to{" "}
-          <a href={`mailto:${DEVELOPER.email}`}>{DEVELOPER.email}</a>, or{" "}
-          <a href={`${DEVELOPER.repo}/issues`}>open an issue on GitHub</a>.
+      <DocSection id="contact" n={8} title="Contact">
+        <p>Questions, bugs, getting your club on AIT Hub, or adding club leads:</p>
+        <a
+          href={`mailto:${DEVELOPER.email}`}
+          className="font-display"
+          style={{ display: "inline-flex", alignItems: "center", gap: "0.6rem", marginTop: "0.8rem", fontSize: "clamp(1.2rem, 3vw, 1.6rem)", color: "var(--ink)" }}
+        >
+          <InkIcon name="mail" size={24} />
+          {DEVELOPER.email}
+        </a>
+        <p style={{ marginTop: "0.8rem", fontSize: "0.9rem", color: "var(--ink-soft)" }}>
+          Or <a href={`${DEVELOPER.repo}/issues`}>open an issue on GitHub</a>.
         </p>
-      </section>
+      </DocSection>
 
-      <footer style={{ marginTop: "4rem", paddingTop: "1.2rem", borderTop: "1px solid var(--rule)", fontSize: "0.8rem", color: "var(--ink-faint)", lineHeight: 1.7 }}>
-        Built by {DEVELOPER.name} ·{" "}
-        <a href={DEVELOPER.website} target="_blank" rel="noreferrer" style={{ color: "var(--ink-soft)" }}>
+      <footer className="doc-credit">
+        <span>An initiative by joycemalik</span>
+        <a href={DEVELOPER.website} target="_blank" rel="noreferrer">
           joycemalik.com
-        </a>{" "}
-        ·{" "}
-        <a href={DEVELOPER.linkedin} target="_blank" rel="noreferrer" style={{ color: "var(--ink-soft)" }}>
+        </a>
+        <a href={DEVELOPER.linkedin} target="_blank" rel="noreferrer">
           LinkedIn
-        </a>{" "}
-        ·{" "}
-        <a href={DEVELOPER.github} target="_blank" rel="noreferrer" style={{ color: "var(--ink-soft)" }}>
-          GitHub
+        </a>
+        <a href={DEVELOPER.repo} target="_blank" rel="noreferrer">
+          Source on GitHub
         </a>
       </footer>
-    </article>
+    </DocPage>
   );
 }

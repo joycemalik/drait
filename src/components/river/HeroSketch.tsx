@@ -1,4 +1,5 @@
 "use client";
+import "./river.css";
 import { useEffect, useState } from "react";
 
 /**

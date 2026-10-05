@@ -20,7 +20,6 @@ export const COLLEGE = {
     "School of Commerce & Management",
   ],
   programmes: ["B.E.", "M.Tech", "MCA", "MBA", "BBA", "BCA", "Ph.D."],
-  placements: { year: "2025–26", recruiters: "70+", placed: "800+", average: "7 LPA", highest: "30 LPA" },
   facilities: ["Central library", "Hostels", "Sports", "NCC", "NSS", "Medical counselling", "AICTE IDEA Lab", "Research incubation (ACTS)"],
 } as const;
 
@@ -55,7 +54,7 @@ export const SEMESTERS = ["1st Sem", "2nd Sem", "3rd Sem", "4th Sem", "5th Sem",
 export const isCollegeEmail = (email?: string | null) => !!email && /@([a-z0-9-]+\.)*drait\.edu\.in$/i.test(email);
 
 export const DEVELOPER = {
-  name: "Joyce Malik",
+  handle: "joycemalik",
   email: "1da23cs069@cs.drait.edu.in",
   website: "https://joycemalik.com",
   linkedin: "https://www.linkedin.com/in/joycemalik/",
