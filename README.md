@@ -1,8 +1,14 @@
-# AIT Hub
+# AIT Hub: student portal for Dr. Ambedkar Institute of Technology (Dr. AIT), Bengaluru
 
-Everything happening at Dr. Ambedkar Institute of Technology, in one place: clubs, events, announcements, and the conversations between them. Built by students, open to anyone who wants to make it better.
+**Live site: [drait.vercel.app](https://drait.vercel.app)**
 
-The front page is **the river**: the next two weeks flow past as water. Every event is a paper boat you can open and RSVP to, every club is a village on the bank (with smoke rising when something's on), and notices drift by as lanterns. The design borrows from Santiniketan: open air, handmade paper, ink and earth colours, nothing boxed in.
+AIT Hub is an open-source student portal for **Dr. Ambedkar Institute of Technology (Dr. AIT / DRAIT), Bengaluru**. Club events, announcements, discussions, study resources (notes and past papers) and student achievements, in one place instead of a dozen WhatsApp groups. Students sign in with their college Google account (`@drait.edu.in`).
+
+Built with **Next.js**, **Supabase** and **Vercel**. Free to use, MIT licensed, and open to contributions from any Dr. AIT student.
+
+<p align="center"><img src="public/logo.svg" alt="AIT Hub logo" width="320"></p>
+
+The home page shows the next two weeks as a hand-drawn river: every event is a paper boat you can open and RSVP to, every club is a village on the bank, and notices drift by as lanterns. The design borrows from Santiniketan: open air, handmade paper, ink and earth colours.
 
 ## What works
 

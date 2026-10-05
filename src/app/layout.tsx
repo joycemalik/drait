@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Instrument_Sans } from "next/font/google";
+import { SITE_DESCRIPTION, SITE_URL } from "@/lib/site";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -11,8 +12,34 @@ const fraunces = Fraunces({
 const body = Instrument_Sans({ subsets: ["latin"], variable: "--font-body" });
 
 export const metadata: Metadata = {
-  title: { default: "AIT Hub", template: "%s · AIT Hub" },
-  description: "Everything happening at Dr. Ambedkar Institute of Technology: clubs, events, and the people behind them.",
+  metadataBase: new URL(SITE_URL),
+  title: { default: "AIT Hub: clubs, events and community at Dr. AIT Bengaluru", template: "%s · AIT Hub" },
+  description: SITE_DESCRIPTION,
+  applicationName: "AIT Hub",
+  keywords: [
+    "Dr. AIT",
+    "Dr. Ambedkar Institute of Technology",
+    "DRAIT",
+    "AIT Bangalore",
+    "Dr AIT clubs",
+    "Dr AIT events",
+    "VTU",
+    "college clubs Bengaluru",
+    "student portal",
+  ],
+  openGraph: {
+    type: "website",
+    siteName: "AIT Hub",
+    locale: "en_IN",
+    url: SITE_URL,
+    title: "AIT Hub: campus life at Dr. AIT, in one place",
+    description: SITE_DESCRIPTION,
+  },
+  twitter: { card: "summary_large_image", title: "AIT Hub", description: SITE_DESCRIPTION },
+  icons: { icon: "/logo-mark.svg" },
+  verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+    : undefined,
 };
 
 export const viewport: Viewport = {

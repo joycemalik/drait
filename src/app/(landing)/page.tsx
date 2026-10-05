@@ -4,6 +4,7 @@ import ThemeToggle from "@/components/ThemeToggle";
 import AuthButton from "@/components/AuthButton";
 import Sky from "@/components/river/Sky";
 import SignInNotice from "@/components/SignInNotice";
+import { SITE_DESCRIPTION, SITE_URL } from "@/lib/site";
 import HeroSketch from "@/components/river/HeroSketch";
 import River from "@/components/river/River";
 import Voices from "@/components/river/Voices";
@@ -11,6 +12,8 @@ import Shore from "@/components/river/Shore";
 import { getAnnouncements, getClubs, getDiscussions, getEvents, getViewer } from "@/lib/data";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { todayISO } from "@/lib/dates";
+
+export const metadata = { alternates: { canonical: "/" } };
 
 const DAYS = 14;
 
@@ -88,6 +91,34 @@ export default async function Landing({ searchParams }: { searchParams: Promise<
         </div>
       </nav>
 
+      <script
+        type="application/ld+json"
+        // Structured data so search engines understand what the site is and who it serves.
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "AIT Hub",
+            url: SITE_URL,
+            description: SITE_DESCRIPTION,
+            inLanguage: "en-IN",
+            about: {
+              "@type": "CollegeOrUniversity",
+              name: "Dr. Ambedkar Institute of Technology",
+              alternateName: "Dr. AIT",
+              url: "https://drait.edu.in",
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "BDA Outer Ring Road, Mallathahalli",
+                addressLocality: "Bengaluru",
+                postalCode: "560056",
+                addressRegion: "Karnataka",
+                addressCountry: "IN",
+              },
+            },
+          }),
+        }}
+      />
       {signin && <SignInNotice reason={signin} />}
 
       <Sky
